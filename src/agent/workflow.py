@@ -2,8 +2,12 @@ from langgraph.graph import START, END, StateGraph
 
 from src.agent.nodes import intent_recognize_node, get_user_info, get_band_info_by_idcard, check_band_info, \
     router_after_get_user_info_node, router_after_get_band_info_by_idcard, get_fault_code
-from state import MessagesState
+
 from functools import partial
+
+from src.agent.state import MessagesState
+
+
 def create_graph(llm_chat, checkpointer)-> StateGraph:
     #创建状态图实例，使用MessagesState作为状态类型
     workflow = StateGraph(MessagesState)

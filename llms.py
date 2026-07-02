@@ -45,7 +45,7 @@ MODEL_CONFIGS = {
     "qwen": {
         "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
         "api_key": os.getenv("DASHSCOPE_API_KEY"),
-        "chat_model": "qwen-max",
+        "chat_model": "qwen-turbo",
         "embedding_model": "text-embedding-v1"
     },
     "ollama": {
