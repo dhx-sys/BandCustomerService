@@ -32,6 +32,8 @@ class Config:
 
     # openai:调用gpt模型, qwen:调用阿里通义千问大模型, oneapi:调用oneapi方案支持的模型, ollama:调用本地开源大模型
     LLM_TYPE = "qwen"
+    #LLM_TYPE = "openaideepseek"
+
 
     REDIS_HOST = "localhost"
     REDIS_PORT = 6379
