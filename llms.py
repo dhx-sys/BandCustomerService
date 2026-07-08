@@ -57,7 +57,7 @@ MODEL_CONFIGS = {
     "qwen": {
         "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
         "api_key": os.getenv("DASHSCOPE_API_KEY"),
-        "chat_model": "deepseek-r1-distill-qwen-1.5b",
+        "chat_model": "qwen-max",
         "embedding_model": "text-embedding-v1"
     },
     "ollama": {
@@ -65,7 +65,13 @@ MODEL_CONFIGS = {
         "api_key": "ollama",
         "chat_model": "llama3.1:8b",
         "embedding_model": "nomic-embed-text:latest"
-    }
+    },
+    "Lmdeployopenai": {
+        "base_url": "http://127.0.0.1:23333/v1",
+        "api_key": "YOUR_KEY",
+        "chat_model": "/root/autodl-tmp/llm/models/Qwen--Qwen3-8B/snapshots/master",
+        "embedding_model": "text-embedding-3-small"
+    },
 }
 
 

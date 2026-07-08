@@ -431,6 +431,7 @@ async def read_long_term_info(user_id :str):
             [d.value["data"] for d in memories if isinstance(d.value, dict) and "data" in d.value]
         ) if memories else ""
 
+
         # 记录查询成功的日志
         logger.info(f"成功获取用户ID: {user_id} 的长期记忆，内容长度: {len(long_term_info)} 字符")
 
@@ -467,7 +468,7 @@ async def lifespan(app: FastAPI):
                 max_size=Config.MAX_SIZE,
                 kwargs={"autocommit": True, "prepare_threshold": 0}
         ) as pool:
-            # 短期记忆 初始化checkpointer，并初始化表结构
+            # 长期记忆 初始化checkpointer，并初始化表结构
             checkpointer = AsyncPostgresSaver(pool)
             await checkpointer.setup()
             logger.info("Checkpointer初始化成功")
