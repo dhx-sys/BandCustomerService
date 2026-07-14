@@ -67,7 +67,7 @@ MODEL_CONFIGS = {
         "embedding_model": "nomic-embed-text:latest"
     },
     "Lmdeployopenai": {
-        "base_url": "http://127.0.0.1:23333/v1",
+        "base_url": "http://127.0.0.1:6006/v1",
         "api_key": "YOUR_KEY",
         "chat_model": "/root/autodl-tmp/llm/models/Qwen--Qwen3-8B/snapshots/master",
         "embedding_model": "text-embedding-3-small"

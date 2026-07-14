@@ -56,6 +56,7 @@ handler.setFormatter(logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 ))
 logger.addHandler(handler)
+logger.info("test info log")
 
 # 定义数据模型 客户端发起的运行智能体的请求数据
 class AgentRequest(BaseModel):

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dhx2589630
+      POSTGRES_DB: ai_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+volumes:
+  postgres_data:
