@@ -3,6 +3,19 @@ from typing import Annotated, Sequence
 from langgraph.graph.message import add_messages
 from langchain_core.messages import BaseMessage
 from pydantic import BaseModel, Field, ConfigDict
+#派单信息
+class OrdersInfo(BaseModel):
+    model_config = ConfigDict(strict=False)
+    id: str= Field(description="id")
+    thread_id: str = Field(description="线程id")
+    user_id: str = Field(description="用户id")
+    band_id: str = Field(description="宽带id")
+    band_info: str = Field(description="宽带信息")
+    band_address: str = Field(description="宽带地址")
+    band_phone: str = Field(description="宽带套餐电话号码")
+    user_phone: str = Field(description="联系电话")
+    fault_type: str = Field(description="用户意图")
+    fault_code: str = Field(description="故障编码")
 
 class MessagesState(TypedDict):
     # 定义messages字段，类型为消息序列使用add_messages处理追加，
@@ -20,6 +33,8 @@ class MessagesState(TypedDict):
     matched_band_address_count: int  #地址匹配循环控制
     get_band_info: bool   #是否获取到宽带信息
     band_info: str  #接口查询的宽带信息
+    fault_code: str #故障编码
+    orders_info: OrdersInfo | None  #派单信息
 
 class IntentRecognizeResult(BaseModel):
     model_config = ConfigDict(strict=False)
@@ -53,3 +68,4 @@ class getFaultFodeResult(BaseModel):
     band_fault: bool = Field(description="网络是否已恢复")
     say_to_user: str = Field(description="下一轮给用户的回复")
     reason: str = Field(description="判断理由，用于调试")
+

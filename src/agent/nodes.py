@@ -1,11 +1,12 @@
 import json
 import random
+from uuid import UUID
 
 from langgraph.types import interrupt
 from langsmith import traceable, get_current_run_tree
 
 from src.agent.state import MessagesState, IntentRecognizeResult, IsSamePackageResult, MatchedBandAddresSResult, \
-    getFaultFodeResult, checkIdCardResult
+    getFaultFodeResult, checkIdCardResult, OrdersInfo
 from src.rag.ragIndex import query_knowledge
 from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph import END
@@ -352,7 +353,29 @@ async def get_fault_code(state: MessagesState, config: RunnableConfig, llm_chat)
         interrupt(assistant)  # payload surfaces in result["__interrupt__"]
         bandFault = response.band_fault
         if bandFault:  # 如果网络已恢复则结束workflow
-            return {"messages": [AIMessage(content=response.say_to_user)]}
+            return {"messages": [AIMessage(content=response.say_to_user)],
+                    fault_code: fault_code
+                    }
+
+
+#解决宽带故障
+@traceable(run_type="chain", name="派单")
+async def send_orders(state: MessagesState, config: RunnableConfig, llm_chat):
+    order = OrdersInfo(
+        id=UUID,
+        thread_id=state["thread_id"],
+        user_id=state["user_id"],
+        band_id=state["band_id"],
+        band_info=state["band_info"],
+        band_address=state["address"],
+        user_phone=state["user_phone"],
+        fault_type=state["fault_type"],
+        fault_code=state["fault_code"]
+    )
+    return {"messages": [AIMessage(content="已为您派单成功，24小时内，装维人员将与您进行联系，请注意接听电话，再见。")],
+            "orders_info": order
+            }
+
 
 
 
@@ -427,3 +450,24 @@ def router_after_check_band_info(state: MessagesState) -> Literal["check_band_in
         return END
     else:
         return "check_band_info"  #识别到用户意图进行信息收集节点
+
+
+def router_after_get_fault_code(state: MessagesState) -> Literal["send_orders", END]:
+    # 检查状态是否为有效字典，若无效则记录错误并默认路由到
+    if not isinstance(state, dict):
+        logger.error("State is not a valid dictionary, defaulting to get_fault_code")
+        return "get_fault_code"
+    # 检查状态是否包含 messages 字段，若缺失则记录错误并默认路由到
+    if "messages" not in state or not isinstance(state["messages"], (list, tuple)):
+        logger.error("State missing valid messages field, defaulting to get_fault_code")
+        return "get_fault_code"
+        # 检查 messages 是否为空，若为空则记录警告并默认路由到
+    if not state["messages"]:
+        logger.warning("Messages list is empty, defaulting to get_fault_code")
+        return "get_fault_code"
+    faultTicket = state.get("fault_ticket")#是否需要派单
+    logger.info(f"Routing based on relevance_score: {faultTicket}")
+    if faultTicket:
+        return "send_orders"
+    else:
+        return END

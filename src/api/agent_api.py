@@ -1,5 +1,7 @@
 import sys
 import os
+
+from langgraph.graph import StateGraph
 from langsmith import Client, traceable
 
 # LangSmith 全局配置
@@ -482,7 +484,8 @@ async def lifespan(app: FastAPI):
             agent_graph = create_graph(llm_chat, checkpointer=checkpointer)
             app.state.agent = agent_graph
             logger.info("Agent初始化成功")
-
+            #保存状态图
+            #save_graph_visualization(agent_graph)
             logger.info("服务完成初始化并启动服务")
             yield
     except Exception as e:
@@ -502,6 +505,26 @@ app = FastAPI(
     description="基于LangGraph提供AI Agent服务",
     lifespan=lifespan
 )
+# 保存状态图的可视化表示
+def save_graph_visualization(graph: StateGraph, filename: str = "graph.png") -> None:
+    """保存状态图的可视化表示。
+
+    Args:
+        graph: 状态图实例。
+        filename: 保存文件路径。
+    """
+    # 尝试执行以下代码块
+    try:
+        # 以二进制写模式打开文件
+        with open(filename, "wb") as f:
+            # 将状态图转换为Mermaid格式的PNG并写入文件
+            f.write(graph.get_graph().draw_mermaid_png())
+        # 记录保存成功的日志
+        logger.info(f"Graph visualization saved as {filename}")
+    # 捕获IO错误
+    except IOError as e:
+        # 记录警告日志
+        logger.warning(f"Failed to save graph visualization: {e}")
 # 解析state消息列表进行格式化展示
 async def parse_messages(messages: List[Any]) -> None:
     """
