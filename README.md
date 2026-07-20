@@ -61,10 +61,6 @@ source venv/bin/activate
 # 安装依赖
 pip install -r requirements.txt
 2. requirements.txt 参考内容
-3. 启动服务
-bash
-# 开发热重载模式
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 服务地址：http://127.0.0.1:8012
 接口文档地址：
 Swagger：http://127.0.0.1:8012/docs
