@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from langsmith import traceable
 from llama_index.core import Settings, VectorStoreIndex, StorageContext
 from llama_index.vector_stores.milvus import MilvusVectorStore
 from llama_index.embeddings.dashscope import DashScopeEmbedding
@@ -106,6 +107,7 @@ def build_or_load_index():
 
 
 # =================5. 执行查询=================
+@traceable(run_type="chain", name="rag查询")
 def query_knowledge( fault_code: str = None):
     """
     执行查询。

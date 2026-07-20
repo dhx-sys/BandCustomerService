@@ -1,12 +1,14 @@
 import json
 import random
+from uuid import UUID
 
 from langgraph.types import interrupt
 from langsmith import traceable, get_current_run_tree
+from pydantic import ValidationError
 
+from src.agent.state import MessagesState, IntentRecognizeResult, IsSamePackageResult, MatchedBandAddresSResult, \
+    getFaultFodeResult, checkIdCardResult, OrdersInfo
 from src.rag.ragIndex import query_knowledge
-from state import MessagesState, IntentRecognizeResult, checkIdCardResult, IsSamePackageResult, \
-    MatchedBandAddresSResult, getFaultFodeResult
 from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph import END
 import logging
@@ -90,11 +92,19 @@ def create_chain(llm_chat, template_file: str, structured_output=None):
         # 创建聊天提示模板，使用模板内容
         prompt = ChatPromptTemplate.from_messages([
             ("system", prompt_template.template),
-            ("human", "用户问题：{question}\n上下文：{messages}")
+            ("human", "用户问题：{question}\n")
         ])
         # 返回提示模板与LLM的组合链，若有结构化输出则绑定
         if structured_output:
-            llm = llm_chat.with_structured_output(structured_output)
+            structured_llm = llm_chat.with_structured_output(structured_output)
+            # 放生格式错误时进行重试最多2次
+            llm = structured_llm.with_retry(
+                stop_after_attempt=2,  # 最多重试2次
+                wait_exponential_jitter=True,
+                retry_if_exception_type=(
+                    ValidationError,  # Pydantic格式解析错误
+                )
+            )
         else:
             llm = llm_chat
 
@@ -135,7 +145,7 @@ async def intent_recognize_node(state: MessagesState, config: RunnableConfig, ll
         # 创建代理处理链
         agent_chain = create_chain(llm_chat, Config.PROMPT_INTENT_RECOGNIZE, IntentRecognizeResult)
         # 调用代理链处理消息
-        response: IntentRecognizeResult = await agent_chain.ainvoke({"question": query, "messages": messages})
+        response: IntentRecognizeResult = await agent_chain.ainvoke({"question": query,"messages": messages})
         if run:
             run.metadata["fault_type"] = response.fault_type
         assistant = {
@@ -195,9 +205,9 @@ async def get_band_info(info):
                     "tel": "19909466205",
                     "band_id": "1005213",
                     "result": "已获取外部系统信息",
-                    "band_info": ['甘肃省兰州市城关区阳光花园小区 5 栋 3 单元 201 室',
-                                  '甘肃省兰州市城关区渭源路街道南昌路社区兰宁小区3号楼2单元7层702',
-                                  '甘肃省天水市秦州区杨庄村 2 社 18 号']
+                    "band_info": ['四川省成都市成华区阳光花园小区 5 栋 3 单元 201 室',
+                                  '四川省德阳市城关区渭源路街道南昌路社区兰宁小区3号楼2单元7层702',
+                                  '四川省泸州市秦州区杨庄村 2 社 18 号']
 
                 },
                 "message": "模拟API调用成功"
@@ -229,7 +239,7 @@ async def get_band_info_by_idcard(state: MessagesState,config: RunnableConfig,  
             # 创建代理处理链
             agent_chain = create_chain(llm_chat, Config.PROMPT_CHECK_ID_CARD, checkIdCardResult)
             # 调用代理链处理消息
-            response: checkIdCardResult = await agent_chain.ainvoke({"question": query, "messages": messages})
+            response: checkIdCardResult = await agent_chain.ainvoke({"question": query,"messages": messages})
             assistant = {
                 "interrupt_type": "user_input",
                 "content": response.say_to_user,
@@ -271,7 +281,7 @@ async def get_user_info(state: MessagesState, config: RunnableConfig, llm_chat):
         # 创建代理处理链
         agent_chain = create_chain(llm_chat, Config.PROMPT_IS_SAME_PACKAGE_USER, IsSamePackageResult)
         # 调用代理链处理消息
-        response: IsSamePackageResult = await agent_chain.ainvoke({"question": query, "messages": messages})
+        response: IsSamePackageResult = await agent_chain.ainvoke({"question": query,"messages": messages,})
         assistant = {
             "interrupt_type": "user_input",
             "content": response.say_to_user,
@@ -314,7 +324,7 @@ async def check_band_info(state: MessagesState, config: RunnableConfig, llm_chat
         # 创建代理处理链
         agent_chain = create_chain(llm_chat, Config.PROMPT_MATCHED_BAND_ADDRESS, MatchedBandAddresSResult)
         # 调用代理链处理消息
-        response: MatchedBandAddresSResult = await agent_chain.ainvoke({"question": query, "messages": messages, "broadbandAddress": state["band_info"]})
+        response: MatchedBandAddresSResult = await agent_chain.ainvoke({"question": query, "messages": messages,"broadbandAddress": state["band_info"]})
         assistant = {
             "interrupt_type": "user_input",
             "content": response.say_to_user,
@@ -352,7 +362,29 @@ async def get_fault_code(state: MessagesState, config: RunnableConfig, llm_chat)
         interrupt(assistant)  # payload surfaces in result["__interrupt__"]
         bandFault = response.band_fault
         if bandFault:  # 如果网络已恢复则结束workflow
-            return {"messages": [AIMessage(content=response.say_to_user)]}
+            return {"messages": [AIMessage(content=response.say_to_user)],
+                    fault_code: fault_code
+                    }
+
+
+#解决宽带故障
+@traceable(run_type="chain", name="派单")
+async def send_orders(state: MessagesState, config: RunnableConfig, llm_chat):
+    order = OrdersInfo(
+        id=UUID,
+        thread_id=state["thread_id"],
+        user_id=state["user_id"],
+        band_id=state["band_id"],
+        band_info=state["band_info"],
+        band_address=state["address"],
+        user_phone=state["user_phone"],
+        fault_type=state["fault_type"],
+        fault_code=state["fault_code"]
+    )
+    return {"messages": [AIMessage(content="已为您派单成功，24小时内，装维人员将与您进行联系，请注意接听电话，再见。")],
+            "orders_info": order
+            }
+
 
 
 
@@ -427,3 +459,24 @@ def router_after_check_band_info(state: MessagesState) -> Literal["check_band_in
         return END
     else:
         return "check_band_info"  #识别到用户意图进行信息收集节点
+
+
+def router_after_get_fault_code(state: MessagesState) -> Literal["send_orders", END]:
+    # 检查状态是否为有效字典，若无效则记录错误并默认路由到
+    if not isinstance(state, dict):
+        logger.error("State is not a valid dictionary, defaulting to get_fault_code")
+        return "get_fault_code"
+    # 检查状态是否包含 messages 字段，若缺失则记录错误并默认路由到
+    if "messages" not in state or not isinstance(state["messages"], (list, tuple)):
+        logger.error("State missing valid messages field, defaulting to get_fault_code")
+        return "get_fault_code"
+        # 检查 messages 是否为空，若为空则记录警告并默认路由到
+    if not state["messages"]:
+        logger.warning("Messages list is empty, defaulting to get_fault_code")
+        return "get_fault_code"
+    faultTicket = state.get("fault_ticket")#是否需要派单
+    logger.info(f"Routing based on relevance_score: {faultTicket}")
+    if faultTicket:
+        return "send_orders"
+    else:
+        return END

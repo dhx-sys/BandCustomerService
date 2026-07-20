@@ -1,16 +1,14 @@
-# config.py
-import os
 
-from langgraph.checkpoint.memory import InMemorySaver
+import os
 
 
 class Config:
     """统一的配置类，集中管理所有常量"""
     # prompt文件路径
-    PROMPT_INTENT_RECOGNIZE = "prompts/intent_recognize1.txt"
+    PROMPT_INTENT_RECOGNIZE = "prompts/intent_recognize2.txt"
     PROMPT_IS_SAME_PACKAGE_USER = "prompts/is_same_package_user.txt"
     PROMPT_CHECK_ID_CARD = "prompts/check_id_card.txt"
-    PROMPT_MATCHED_BAND_ADDRESS = "prompts/matched_band_address.txt"
+    PROMPT_MATCHED_BAND_ADDRESS = "prompts/matched_band_address1.txt"
     PROMPT_FAULT_MANAGE = "prompts/fault_manage.txt"
 
     # Chroma 数据库配置
@@ -30,8 +28,10 @@ class Config:
     BACKUP_COUNT=3
 
 
-    # openai:调用gpt模型, qwen:调用阿里通义千问大模型, oneapi:调用oneapi方案支持的模型, ollama:调用本地开源大模型
+    # openai:调用gpt模型, qwen:调用阿里通义千问大模型, oneapi:调用oneapi方案支持的模型, Lmdeploy:调用本地开源大模型
     LLM_TYPE = "qwen"
+    #LLM_TYPE = "openaideepseek"
+
 
     REDIS_HOST = "localhost"
     REDIS_PORT = 6379

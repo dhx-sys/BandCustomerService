@@ -36,11 +36,17 @@ MODEL_CONFIGS = {
         "chat_model": "gpt-4o-mini",
         "embedding_model": "text-embedding-3-small"
     },
-    "oneapi": {
-        "base_url": "http://139.224.72.218:3000/v1",
-        "api_key": "sk-GseYmJ8pX1D0I200W7a5062e8f12122342323C4B724FfD66aD9",
-        "chat_model": "qwen-max",
-        "embedding_model": "text-embedding-v1"
+    "openaiglm": {
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "api_key": os.getenv("DASHSCOPE_API_KEY"),
+        "chat_model": "glm-5-plus",
+        "embedding_model": "text-embedding-3-small"
+    },
+    "openaideepseek": {
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "api_key": os.getenv("DASHSCOPE_API_KEY"),
+        "chat_model": "deepseek-v4-flash",
+        "embedding_model": "text-embedding-3-small"
     },
     "qwen": {
         "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
@@ -48,17 +54,19 @@ MODEL_CONFIGS = {
         "chat_model": "qwen-max",
         "embedding_model": "text-embedding-v1"
     },
-    "ollama": {
-        "base_url": "http://localhost:11434/v1",
-        "api_key": "ollama",
-        "chat_model": "llama3.1:8b",
-        "embedding_model": "nomic-embed-text:latest"
-    }
+    "Lmdeploy": {
+        "base_url": "http://127.0.0.1:6006/v1",
+        "api_key": "YOUR_KEY",
+        "chat_model": "/root/autodl-tmp/llm/models/Qwen--Qwen3-8B/snapshots/master",
+        "embedding_model": "text-embedding-3-small"
+    },
 }
 
 
 # 默认配置
-DEFAULT_LLM_TYPE = "qwen"
+#DEFAULT_LLM_TYPE = "qwen"
+#DEFAULT_LLM_TYPE = "openaideepseek"
+DEFAULT_LLM_TYPE = "openaiglm"
 DEFAULT_TEMPERATURE = 0
 
 
