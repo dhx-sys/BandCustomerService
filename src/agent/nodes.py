@@ -4,6 +4,7 @@ from uuid import UUID
 
 from langgraph.types import interrupt
 from langsmith import traceable, get_current_run_tree
+from pydantic import ValidationError
 
 from src.agent.state import MessagesState, IntentRecognizeResult, IsSamePackageResult, MatchedBandAddresSResult, \
     getFaultFodeResult, checkIdCardResult, OrdersInfo
@@ -95,7 +96,15 @@ def create_chain(llm_chat, template_file: str, structured_output=None):
         ])
         # 返回提示模板与LLM的组合链，若有结构化输出则绑定
         if structured_output:
-            llm = llm_chat.with_structured_output(structured_output)
+            structured_llm = llm_chat.with_structured_output(structured_output)
+            # 放生格式错误时进行重试最多2次
+            llm = structured_llm.with_retry(
+                stop_after_attempt=2,  # 最多重试2次
+                wait_exponential_jitter=True,
+                retry_if_exception_type=(
+                    ValidationError,  # Pydantic格式解析错误
+                )
+            )
         else:
             llm = llm_chat
 
@@ -129,14 +138,14 @@ def get_prompt(template_file: str, structured_output=None):
 async def intent_recognize_node(state: MessagesState, config: RunnableConfig, llm_chat):
     # 记录代理开始处理查询
     logger.info("意图识别开始...")
-    #messages = filter_messages(state["messages"])
+    messages = filter_messages(state["messages"])
     query = state["messages"][-1].content
     run = get_current_run_tree()
     while True:
         # 创建代理处理链
         agent_chain = create_chain(llm_chat, Config.PROMPT_INTENT_RECOGNIZE, IntentRecognizeResult)
         # 调用代理链处理消息
-        response: IntentRecognizeResult = await agent_chain.ainvoke({"question": query})
+        response: IntentRecognizeResult = await agent_chain.ainvoke({"question": query,"messages": messages})
         if run:
             run.metadata["fault_type"] = response.fault_type
         assistant = {
@@ -223,14 +232,14 @@ async def get_band_info(info):
 @traceable(run_type="chain", name="用户信息收集，调用接口查询身份证号码下的宽带信息")
 async def get_band_info_by_idcard(state: MessagesState,config: RunnableConfig,  llm_chat):
         # 自定义线程内存储逻辑 过滤消息
-        #messages = filter_messages(state["messages"])
+        messages = filter_messages(state["messages"])
         # 取最新一条用户消息
         query = state["messages"][-1].content if isinstance(state["messages"][-1], HumanMessage) else ""
         while True:
             # 创建代理处理链
             agent_chain = create_chain(llm_chat, Config.PROMPT_CHECK_ID_CARD, checkIdCardResult)
             # 调用代理链处理消息
-            response: checkIdCardResult = await agent_chain.ainvoke({"question": query})
+            response: checkIdCardResult = await agent_chain.ainvoke({"question": query,"messages": messages})
             assistant = {
                 "interrupt_type": "user_input",
                 "content": response.say_to_user,
@@ -265,14 +274,14 @@ async def get_user_info(state: MessagesState, config: RunnableConfig, llm_chat):
     # 继续收集是否套餐下的宽带
     logger.info("是否为同套餐下的宽带查询开始。。。")
     # 自定义线程内存储逻辑 过滤消息
-    #messages = filter_messages(state["messages"])
+    messages = filter_messages(state["messages"])
     # 取最新一条用户消息
     query = state["messages"][-1].content if isinstance(state["messages"][-1], HumanMessage) else ""
     while True:
         # 创建代理处理链
         agent_chain = create_chain(llm_chat, Config.PROMPT_IS_SAME_PACKAGE_USER, IsSamePackageResult)
         # 调用代理链处理消息
-        response: IsSamePackageResult = await agent_chain.ainvoke({"question": query})
+        response: IsSamePackageResult = await agent_chain.ainvoke({"question": query,"messages": messages,})
         assistant = {
             "interrupt_type": "user_input",
             "content": response.say_to_user,
@@ -315,7 +324,7 @@ async def check_band_info(state: MessagesState, config: RunnableConfig, llm_chat
         # 创建代理处理链
         agent_chain = create_chain(llm_chat, Config.PROMPT_MATCHED_BAND_ADDRESS, MatchedBandAddresSResult)
         # 调用代理链处理消息
-        response: MatchedBandAddresSResult = await agent_chain.ainvoke({"question": query, "broadbandAddress": state["band_info"]})
+        response: MatchedBandAddresSResult = await agent_chain.ainvoke({"question": query, "messages": messages,"broadbandAddress": state["band_info"]})
         assistant = {
             "interrupt_type": "user_input",
             "content": response.say_to_user,

@@ -3,7 +3,7 @@ import os
 
 from langgraph.graph import StateGraph
 from langsmith import Client, traceable
-
+from fastapi.middleware.cors import CORSMiddleware
 # LangSmith 全局配置
 os.environ["LANGSMITH_TRACING"] = "true"
 os.environ["LANGSMITH_API_KEY"] = "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"
@@ -68,6 +68,8 @@ class AgentRequest(BaseModel):
     session_id: str
     # 用户的问题
     query: str
+    #用户电话号码
+    phone: str
 
 # 定义数据模型 运行智能体后返回的响应数据
 class AgentResponse(BaseModel):
@@ -505,6 +507,14 @@ app = FastAPI(
     description="基于LangGraph提供AI Agent服务",
     lifespan=lifespan
 )
+# 全局跨域配置
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],       # 允许所有前端地址，本地调试用
+    allow_credentials=True,
+    allow_methods=["*"],        # 允许POST/GET/OPTIONS所有请求方法
+    allow_headers=["*"],
+)
 # 保存状态图的可视化表示
 def save_graph_visualization(graph: StateGraph, filename: str = "graph.png") -> None:
     """保存状态图的可视化表示。
@@ -592,7 +602,6 @@ async def invoke_agent(request: AgentRequest):
     # 获取用户请求中的user_id和session_id
     user_id = request.user_id
     session_id = request.session_id
-
 
     # # 调用函数获取长期记忆
     # result = await read_long_term_info(user_id)
