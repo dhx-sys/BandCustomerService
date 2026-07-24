@@ -10,7 +10,7 @@ os.environ["LANGSMITH_API_KEY"] = "lsv2_pt_ef7eccc00d384904bd676a4fe32089c3_25b8
 os.environ["LANGSMITH_PROJECT"] = "宽带故障客服机器人"
 
 # 实例化客户端，用于手动创建反馈、日志查询
-langsmith_client = Client()
+langsmith_client = Client()   
 # 关键修复步骤：必须在导入 uvicorn 或创建 app 之前设置
 if sys.platform == "win32":
     import asyncio

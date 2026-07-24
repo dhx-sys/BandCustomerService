@@ -1,9 +1,0 @@
-2026-06-18 11:37:59,006 - __main__ - INFO - 成功初始化 qwen LLM
-2026-06-18 11:37:59,028 - __main__ - ERROR - LLM配置错误: 不支持的LLM类型: invalid_type. 可用的类型: ['openai', 'oneapi', 'qwen', 'ollama']
-2026-06-18 11:37:59,030 - __main__ - WARNING - 使用默认配置重试: LLM配置错误: 不支持的LLM类型: invalid_type. 可用的类型: ['openai', 'oneapi', 'qwen', 'ollama']
-2026-06-18 11:37:59,064 - __main__ - INFO - 成功初始化 qwen LLM
-2026-06-18 11:38:19,210 - llms - INFO - 成功初始化 qwen LLM
-2026-06-18 11:39:18,152 - llms - INFO - 成功初始化 qwen LLM
-2026-06-18 11:52:01,186 - llms - INFO - 成功初始化 qwen LLM
-2026-07-02 15:18:50,199 - __main__ - INFO - 成功初始化 qwen LLM
-2026-07-14 13:36:17,371 - __main__ - INFO - 成功初始化 openaiglm LLM

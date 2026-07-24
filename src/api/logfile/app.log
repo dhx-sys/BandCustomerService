@@ -269,3 +269,90 @@
 2026-07-20 13:12:12,200 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\fault_manage.txt
 2026-07-20 13:12:15,033 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\fault_manage.txt
 2026-07-20 13:12:17,619 - agent_api - INFO - 当前触发工具调用中断:session_id='6586f4b7-7c26-48b7-969b-741f8f3a1a83' status='interrupted' timestamp=1784524337.608935 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '我们将尽快为您派单处理，12小时内装维将会联系您,请您注意接听电话，再见。', 'payload': {}}
+2026-07-24 11:23:40,763 - __main__ - INFO - test info log
+2026-07-24 11:23:40,814 - agent_api - INFO - test info log
+2026-07-24 11:24:06,002 - __mp_main__ - INFO - test info log
+2026-07-24 11:24:06,126 - agent_api - INFO - test info log
+2026-07-24 11:24:06,149 - agent_api - INFO - Redis初始化成功
+2026-07-24 11:24:06,395 - agent_api - INFO - Checkpointer初始化成功
+2026-07-24 11:24:08,290 - llms - INFO - 成功初始化 Lmdeploy_train LLM
+2026-07-24 11:24:08,292 - agent_api - INFO - Chat模型初始化成功
+2026-07-24 11:24:08,294 - agent_api - INFO - 启动：构建LangGraph智能体流程图
+2026-07-24 11:24:08,302 - agent_api - INFO - Agent初始化成功
+2026-07-24 11:24:08,304 - agent_api - INFO - 服务完成初始化并启动服务
+2026-07-24 11:24:54,509 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='broadband_user_001' session_id='9eb437bf-6d80-46e7-9b43-fa6c00f9a589' query='你好' phone='19909466205'
+2026-07-24 11:24:54,524 - agent_api - INFO - Removed expired session_id 155f9035-3652-46c5-b877-36b5ad4554c7 for user broadband_user_001
+2026-07-24 11:24:54,526 - agent_api - INFO - Removed expired session_id 41d8343e-322b-4079-bff8-e604f90a9b44 for user broadband_user_001
+2026-07-24 11:24:54,529 - agent_api - INFO - Removed expired session_id 2c1ddf8a-49a5-49d2-a1bb-efc13e3cd911 for user broadband_user_001
+2026-07-24 11:24:54,531 - agent_api - INFO - Removed expired session_id ed11cfd1-51ab-4ef3-8d3d-efb0823f1404 for user broadband_user_001
+2026-07-24 11:24:54,533 - agent_api - INFO - Removed expired session_id 6586f4b7-7c26-48b7-969b-741f8f3a1a83 for user broadband_user_001
+2026-07-24 11:24:54,535 - agent_api - INFO - Removed expired session_id 6f6c1cc4-bc2a-463c-ac3e-2356b967019b for user broadband_user_001
+2026-07-24 11:24:54,536 - agent_api - INFO - Removed expired session_id 8ae9857d-ddea-4187-8ed7-99d7ff7a3268 for user broadband_user_001
+2026-07-24 11:24:54,538 - agent_api - INFO - Removed expired session_id fef198c3-007b-48de-8d6c-8516176a6d34 for user broadband_user_001
+2026-07-24 11:24:54,541 - agent_api - INFO - Removed expired session_id 0e0fe047-114b-425d-940b-c8c6bb9bef8a for user broadband_user_001
+2026-07-24 11:24:54,543 - agent_api - INFO - Removed expired session_id 25e63a50-588d-4d2f-8757-52519994f5c0 for user broadband_user_001
+2026-07-24 11:24:54,546 - agent_api - INFO - Deleted empty user_sessions collection for user broadband_user_001
+2026-07-24 11:24:54,596 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:24:54,597 - src.agent.nodes - INFO - Loading and caching prompt template from E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:24:56,409 - agent_api - INFO - 当前触发工具调用中断:session_id='9eb437bf-6d80-46e7-9b43-fa6c00f9a589' status='interrupted' timestamp=1784863496.388259 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}
+2026-07-24 11:25:01,774 - agent_api - INFO - resume_agent接口，接受到前端用户请求:user_id='broadband_user_001' session_id='9eb437bf-6d80-46e7-9b43-fa6c00f9a589' query='啊' phone='19909466205'
+2026-07-24 11:25:01,800 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:25:01,802 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:25:03,463 - src.agent.nodes - INFO - 信息收集开始...
+2026-07-24 11:25:03,474 - src.agent.nodes - INFO - 是否为同套餐下的宽带查询开始。。。
+2026-07-24 11:25:03,477 - src.agent.nodes - INFO - Loading and caching prompt template from E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\is_same_package_user.txt
+2026-07-24 11:25:05,213 - agent_api - INFO - 当前触发工具调用中断:session_id='9eb437bf-6d80-46e7-9b43-fa6c00f9a589' status='interrupted' timestamp=1784863505.1950493 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '我将为您按照当前号码进行查询。', 'payload': {}}
+2026-07-24 11:25:35,195 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='broadband_user_001' session_id='9516fc2f-666c-4071-a2ff-88a1ec04372e' query='你好' phone='19909466205'
+2026-07-24 11:25:35,213 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:25:35,215 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:25:36,883 - agent_api - INFO - 当前触发工具调用中断:session_id='9516fc2f-666c-4071-a2ff-88a1ec04372e' status='interrupted' timestamp=1784863536.8653758 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}
+2026-07-24 11:26:24,440 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='001' session_id='001' query='你好' phone='19909466205'
+2026-07-24 11:26:24,444 - agent_api - INFO - Removed expired session_id 001 for user 001
+2026-07-24 11:26:24,446 - agent_api - INFO - Deleted empty user_sessions collection for user 001
+2026-07-24 11:26:24,473 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:26:24,475 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:26:27,127 - agent_api - INFO - 当前触发工具调用中断:session_id='001' status='interrupted' timestamp=1784863587.105499 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}
+2026-07-24 11:29:43,638 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='002' session_id='002' query='你好' phone='19909466205'
+2026-07-24 11:29:43,646 - agent_api - INFO - Removed expired session_id 002 for user 002
+2026-07-24 11:29:43,648 - agent_api - INFO - Deleted empty user_sessions collection for user 002
+2026-07-24 11:29:43,675 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:29:43,676 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:30:58,790 - agent_api - INFO - 当前触发工具调用中断:session_id='002' status='interrupted' timestamp=1784863858.6059074 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '您好，请问您的宽带遇到什么问题了吗？', 'payload': {}}
+2026-07-24 11:32:21,932 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='333' session_id='333' query='你好' phone='19909466205'
+2026-07-24 11:32:21,935 - agent_api - INFO - Deleted empty user_sessions collection for user 333
+2026-07-24 11:32:21,959 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:32:21,961 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:32:23,657 - agent_api - INFO - 当前触发工具调用中断:session_id='333' status='interrupted' timestamp=1784863943.6360614 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}
+2026-07-24 11:32:37,704 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='334' session_id='334' query='你好' phone='19909466205'
+2026-07-24 11:32:37,715 - agent_api - INFO - Deleted empty user_sessions collection for user 334
+2026-07-24 11:32:37,744 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:32:37,747 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:33:45,130 - agent_api - INFO - 当前触发工具调用中断:session_id='334' status='interrupted' timestamp=1784864025.0979683 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}
+2026-07-24 11:55:35,861 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='024' session_id='024' query='你好' phone='19909466205'
+2026-07-24 11:55:35,884 - agent_api - INFO - Removed expired session_id 024 for user 024
+2026-07-24 11:55:35,891 - agent_api - INFO - Deleted empty user_sessions collection for user 024
+2026-07-24 11:55:35,943 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:55:35,946 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 11:56:16,316 - agent_api - INFO - 当前触发工具调用中断:session_id='024' status='interrupted' timestamp=1784865376.288967 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}
+2026-07-24 11:56:27,182 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='444' session_id='444' query='你好' phone='19909466205'
+2026-07-24 11:56:27,195 - agent_api - INFO - Deleted empty user_sessions collection for user 444
+2026-07-24 11:56:27,224 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 11:56:27,226 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\intent_recognize2.txt
+2026-07-24 12:11:02,089 - agent_api - INFO - 当前触发工具调用中断:session_id='444' status='interrupted' timestamp=1784866262.0691342 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}
+2026-07-24 12:11:16,094 - agent_api - INFO - 关闭服务并完成资源清理
+2026-07-24 12:11:43,404 - __main__ - INFO - test info log
+2026-07-24 12:11:43,449 - agent_api - INFO - test info log
+2026-07-24 12:12:11,357 - __mp_main__ - INFO - test info log
+2026-07-24 12:12:11,486 - agent_api - INFO - test info log
+2026-07-24 12:12:11,515 - agent_api - INFO - Redis初始化成功
+2026-07-24 12:12:11,688 - agent_api - INFO - Checkpointer初始化成功
+2026-07-24 12:12:13,479 - llms - INFO - 成功初始化 Lmdeploy_train LLM
+2026-07-24 12:12:13,481 - agent_api - INFO - Chat模型初始化成功
+2026-07-24 12:12:13,482 - agent_api - INFO - 启动：构建LangGraph智能体流程图
+2026-07-24 12:12:13,490 - agent_api - INFO - Agent初始化成功
+2026-07-24 12:12:13,491 - agent_api - INFO - 服务完成初始化并启动服务
+2026-07-24 12:12:45,175 - agent_api - INFO - 调用/agent/invoke接口，运行智能体并返回大模型结果或中断数据，接受到前端用户请求:user_id='123' session_id='123' query='你好' phone='19909466205'
+2026-07-24 12:12:45,202 - agent_api - INFO - Deleted empty user_sessions collection for user 123
+2026-07-24 12:12:45,257 - src.agent.nodes - INFO - 意图识别开始...
+2026-07-24 12:12:45,260 - src.agent.nodes - INFO - Loading and caching prompt template from E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts1\intent_recognize2.txt
+2026-07-24 12:13:24,881 - agent_api - INFO - 当前触发工具调用中断:session_id='123' status='interrupted' timestamp=1784866404.8532252 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '非常抱歉给您带来不便。', 'payload': {}}

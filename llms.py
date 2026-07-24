@@ -60,6 +60,12 @@ MODEL_CONFIGS = {
         "chat_model": "/root/autodl-tmp/llm/models/Qwen--Qwen3-8B/snapshots/master",
         "embedding_model": "text-embedding-3-small"
     },
+    "Lmdeploy_train": {
+        "base_url": "http://127.0.0.1:23333/v1",
+        "api_key": "YOUR_KEY",
+        "chat_model": "/root/autodl-tmp/llm/models/qwen3-8b-full-merged",
+        "embedding_model": "text-embedding-3-small"
+    },
 }
 
 
