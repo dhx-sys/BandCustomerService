@@ -269,3 +269,13 @@
 2026-07-20 13:12:12,200 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\fault_manage.txt
 2026-07-20 13:12:15,033 - src.agent.nodes - INFO - Using cached prompt template for E:\AiAgent\server\BandCustomerService\BandCustomerService\src\prompts\fault_manage.txt
 2026-07-20 13:12:17,619 - agent_api - INFO - 当前触发工具调用中断:session_id='6586f4b7-7c26-48b7-969b-741f8f3a1a83' status='interrupted' timestamp=1784524337.608935 message=None result=None interrupt_data={'interrupt_type': 'user_input', 'content': '我们将尽快为您派单处理，12小时内装维将会联系您,请您注意接听电话，再见。', 'payload': {}}
+2026-07-24 12:21:18,912 - agent_api - INFO - 关闭服务并完成资源清理
+2026-07-24 12:21:44,217 - __mp_main__ - INFO - test info log
+2026-07-24 12:21:44,324 - agent_api - INFO - test info log
+2026-07-24 12:21:44,346 - agent_api - INFO - Redis初始化成功
+2026-07-24 12:21:44,475 - agent_api - INFO - Checkpointer初始化成功
+2026-07-24 12:21:46,179 - llms - INFO - 成功初始化 qwen LLM
+2026-07-24 12:21:46,181 - agent_api - INFO - Chat模型初始化成功
+2026-07-24 12:21:46,182 - agent_api - INFO - 启动：构建LangGraph智能体流程图
+2026-07-24 12:21:46,191 - agent_api - INFO - Agent初始化成功
+2026-07-24 12:21:46,193 - agent_api - INFO - 服务完成初始化并启动服务
